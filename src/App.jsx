@@ -7,13 +7,13 @@ function App() {
 
   function addNewTodo() {
     if (newTodoName === "") return
-
     setTodos((currentTodos) => {
       return [
         ...currentTodos,
         { name: newTodoName, completed: false, id: crypto.randomUUID() },
       ]
     })
+    setNewTodoName("")
   }
   function toggleTodoCompleted(id, completed) {
     setTodos((currentTodos) => {
@@ -23,6 +23,13 @@ function App() {
       })
     })
   }
+
+  function deleteTodo(id) {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => todo.id !== id)
+    })
+  }
+
   return (
     <React.Fragment>
       <ul id="list">
@@ -40,7 +47,14 @@ function App() {
                 />
                 <span data-list-item-text>{todo.name}</span>
               </label>
-              <button data-button-delete>Delete</button>
+              <button
+                data-button-delete
+                onClick={() => {
+                  deleteTodo(todo.id)
+                }}
+              >
+                Delete
+              </button>
             </li>
           )
         })}
