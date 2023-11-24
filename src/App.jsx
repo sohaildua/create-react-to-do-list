@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import "./style.css"
+import { TodoItem } from "./TodoItem"
 
 function App() {
   const [newTodoName, setNewTodoName] = useState("")
@@ -15,6 +16,7 @@ function App() {
     })
     setNewTodoName("")
   }
+
   function toggleTodoCompleted(id, completed) {
     setTodos((currentTodos) => {
       return currentTodos?.map((todo) => {
@@ -35,33 +37,17 @@ function App() {
       <ul id="list">
         {todos?.map((todo) => {
           return (
-            <li key={todo.id} className="list-item">
-              <label className="list-item-label">
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  data-list-item-checkbox
-                  onChange={(e) =>
-                    toggleTodoCompleted(todo.id, e.target.checked)
-                  }
-                />
-                <span data-list-item-text>{todo.name}</span>
-              </label>
-              <button
-                data-button-delete
-                onClick={() => {
-                  deleteTodo(todo.id)
-                }}
-              >
-                Delete
-              </button>
-            </li>
+            <TodoItem
+              key={todo.id}
+              {...todo}
+              toggleTodoCompleted={toggleTodoCompleted}
+              deleteTodo={deleteTodo}
+            />
           )
         })}
       </ul>
 
       <div id="new-todo-form">
-        {JSON.stringify(todos)}
         <label htmlFor="todo-input">New Todo</label>
         <input
           type="text"
